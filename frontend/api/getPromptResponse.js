@@ -13,7 +13,6 @@ export const getPromptResponse = async (prompt, onPartialMessage) => {
     };
 
     ws.onclose = () => {
-      console.log("FINISSHED");
       resolve(response);
     };
 

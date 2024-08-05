@@ -40,7 +40,7 @@ export default function Home() {
       addMessage(prompt, agentTypes.user);
       addMessage("", agentTypes.richieRich);
 
-      getPromptResponse(prompt, (partialMessage) => {
+      await getPromptResponse(prompt, (partialMessage) => {
         setMessages((prev) => {
           const updatedMessages = [...prev];
           updatedMessages[updatedMessages.length - 1] = {
