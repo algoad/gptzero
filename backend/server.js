@@ -35,6 +35,14 @@ async function getRichieRichResponse(prompt, onPartialMessage) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket("ws://localhost:8082/v1/stream");
     let response = "";
+    let timeout;
+
+    const resetTimeout = () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        ws.close();
+      }, 1000);
+    };
 
     ws.on("open", () => {
       ws.send(prompt);
@@ -56,12 +64,11 @@ async function getRichieRichResponse(prompt, onPartialMessage) {
         onPartialMessage(responseHTML);
         buffer = buffer.slice(endTagIndex);
       }
+      resetTimeout();
     });
 
     ws.on("close", () => {
-      if (response) {
-        onPartialMessage(response);
-      }
+      console.log("CLOSING");
       resolve();
     });
 
